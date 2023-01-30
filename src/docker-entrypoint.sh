@@ -87,7 +87,7 @@ if [ "${INPUT_ACTION_DOCS_GIT_PUSH}" = "true" ]; then
   git checkout -b "${GITHUB_HEAD_REF}"
   debug_message "ICICI ${GITHUB_HEAD_REF}"
   git fetch -v
-  git fetch --unshallow HEAD:"${GITHUB_HEAD_REF}"
+  git fetch --unshallow
   git fetch -v
 
   debug_message "LAAAA"
