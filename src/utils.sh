@@ -3,7 +3,7 @@
 debug_message(){
     msg="$1"
 
-    if [ "$DEBUG" == "true" ];then
+    if [ "$INPUT_ACTION_DOCS_DEBUG_MODE" == "true" ];then
         echo "$msg"
     fi
 }
