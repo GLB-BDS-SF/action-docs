@@ -82,10 +82,11 @@ git_setup
 update_doc "${INPUT_ACTION_DOCS_WORKING_DIR}"
 
 if [ "${INPUT_ACTION_DOCS_GIT_PUSH}" = "true" ]; then
+  git fetch --unshallow
+  git checkout "${GITHUB_HEAD_REF}"
   git_commit
   # git switch -c "${GITHUB_HEAD_REF}"
-  git checkout -b "${GITHUB_HEAD_REF}"
-  git fetch --unshallow
+
   git push origin HEAD:"${GITHUB_HEAD_REF}" -f
 
 else
