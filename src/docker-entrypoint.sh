@@ -1,18 +1,30 @@
 #!/bin/bash
 set -e
 
+path=$(readlink -f "${BASH_SOURCE:-$0}")
+DIR_PATH=$(dirname "$path")
+
+# shellcheck source=/dev/null
+source "${DIR_PATH}/utils.sh"
+
+
 git_add_doc () {
+  debug_message "Into git_add_doc"
 
   MY_FILE="${1}"
   git add "${MY_FILE}"
 }
 
 git_changed () {
+  debug_message "Into git_changed"
+
   GIT_FILES_CHANGED=`git status --porcelain | grep -E '([MA]\W).+' | wc -l`
   echo "::set-output name=num_changed::${GIT_FILES_CHANGED}"
 }
 
 git_setup () {
+  debug_message "Into git_setup"
+
   env
   git config --global user.name ${GITHUB_ACTOR}
   git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
@@ -24,6 +36,8 @@ git_setup () {
 }
 
 git_commit () {
+  debug_message "Into git_commit"
+
   git_changed
   if [ "${GIT_FILES_CHANGED}" -eq 0 ]; then
     echo "::debug file=common.sh,line=20,col=1 No files changed, skipping commit"
@@ -33,7 +47,8 @@ git_commit () {
 }
 
 update_doc () {
-
+  debug_message "Into update_doc"
+  
   WORKING_DIR="${1}"
 
   if [ ! -f "${WORKING_DIR}/action.yml" ]; then
@@ -70,7 +85,10 @@ if [ "${INPUT_ACTION_DOCS_GIT_PUSH}" = "true" ]; then
   git_commit
   # git switch -c "${GITHUB_HEAD_REF}"
   git checkout -b "${GITHUB_HEAD_REF}"
+  debug_message "ICICI"
+  git remote -v
   git fetch --unshallow HEAD:"${GITHUB_HEAD_REF}"
+  debug_message "LAAAA"
   git push origin HEAD:"${GITHUB_HEAD_REF}" -f
 else
   git_changed
