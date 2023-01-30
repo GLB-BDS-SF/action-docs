@@ -35,7 +35,7 @@ teardown_file() {
     GITHUB_WORKSPACE="${BATS_TEST_DIRNAME}/tmp/local"
     GITHUB_HEAD_REF='test-branch'
     INPUT_ACTION_DOCS_WORKING_DIR="${BATS_TEST_DIRNAME}/tmp/"
-    cp "${SRC_BASE_DIR}/action.yml" "${BATS_TEST_DIRNAME}/tmp/"
+    cp "${DIR_PATH}/action.yml" "${BATS_TEST_DIRNAME}/tmp/"
     
     run "${SRC_BASE_DIR}"/docker-entrypoint.sh
 
