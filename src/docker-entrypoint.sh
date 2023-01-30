@@ -85,11 +85,15 @@ if [ "${INPUT_ACTION_DOCS_GIT_PUSH}" = "true" ]; then
   git_commit
   # git switch -c "${GITHUB_HEAD_REF}"
   git checkout -b "${GITHUB_HEAD_REF}"
-  debug_message "ICICI"
-  git remote -v
+  debug_message "ICICI ${GITHUB_HEAD_REF}"
+  git fetch -v
   git fetch --unshallow HEAD:"${GITHUB_HEAD_REF}"
+  git fetch -v
+
   debug_message "LAAAA"
   git push origin HEAD:"${GITHUB_HEAD_REF}" -f
+  debug_message "FIN"
+
 else
   git_changed
 fi
