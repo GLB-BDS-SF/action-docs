@@ -6,3 +6,6 @@ install_bats:
     git clone https://github.com/ztombol/bats-support tests/test_helper/bats-support
     git clone https://github.com/ztombol/bats-assert tests/test_helper/bats-assert
     sudo /usr/src/bats-core/install.sh /usr/local
+
+test:
+    clear && bats tests/test.bats -p -T --print-output-on-failure --verbose-run

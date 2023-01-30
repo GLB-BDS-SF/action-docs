@@ -20,14 +20,21 @@ git_changed () {
 
   GIT_FILES_CHANGED=`git status --porcelain | grep -E '([MA]\W).+' | wc -l`
   echo "::set-output name=num_changed::${GIT_FILES_CHANGED}"
+
+  debug_message "End git_changed"
 }
 
 git_setup () {
   debug_message "Into git_setup"
 
-  env
   git config --global user.name ${GITHUB_ACTOR}
   git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
+  git fetch --unshallow
+  git checkout "${GITHUB_HEAD_REF}"
+
+  debug_message "End git_setup"
+
+
   # git fetch --depth=1 origin +refs/tags/*:refs/tags/*
   # if [ "${GITHUB_EVENT_NAME}" == 'pull_request' ]; then
   #   git checkout "${GITHUB_HEAD_REF}"
@@ -50,6 +57,8 @@ update_doc () {
   debug_message "Into update_doc"
   
   WORKING_DIR="${1}"
+
+  debug_message "WORKING_DIR : [ $WORKING_DIR ]"
 
   if [ ! -f "${WORKING_DIR}/action.yml" ]; then
     echo "::error file=common.sh,line=35,col=1::action.yml does not exist"
@@ -74,17 +83,22 @@ update_doc () {
 
   sed -i -ne '/<!--- BEGIN_ACTION_DOCS --->/ {p; r /tmp/action_doc.md' -e ':a; n; /<!--- END_ACTION_DOCS --->/ {p; b}; ba}; p' "${WORKING_DIR}/README.md"
   git_add_doc "${WORKING_DIR}/README.md"
+
+  debug_message "End update_doc"
 }
 
 cd $GITHUB_WORKSPACE
 git_setup
-git fetch --unshallow
-git checkout "${GITHUB_HEAD_REF}"
+
 update_doc "${INPUT_ACTION_DOCS_WORKING_DIR}"
 
 if [ "${INPUT_ACTION_DOCS_GIT_PUSH}" = "true" ]; then
   git_commit
   git push origin HEAD:"${GITHUB_HEAD_REF}" -f
+
+  if [ "$INPUT_ACTION_DOCS_DEBUG_MODE" == "true" ];then
+    git log
+  fi
 else
   git_changed
 fi

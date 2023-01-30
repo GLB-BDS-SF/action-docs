@@ -1,5 +1,5 @@
 # You can pick any Debian/Ubuntu-based image. 😊
-FROM mcr.microsoft.com/vscode/devcontainers/base:bullseye
+FROM mcr.microsoft.com/devcontainers/base:jammy
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
 ARG USERNAME=vscode
@@ -19,12 +19,21 @@ RUN cd /home/vscode/actions-runner \
     && tar xzf /home/vscode/actions-runner/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
     && /home/vscode/actions-runner/bin/installdependencies.sh
 
-RUN rm -rf /tmp/bats-core
-    && rm -rf /usr/src/bats-core
-    && git clone https://github.com/bats-core/bats-core.git /usr/src/bats-core
-    && git clone https://github.com/ztombol/bats-support /tests/test_helper/bats-support
-    && git clone https://github.com/ztombol/bats-assert /tests/test_helper/bats-assert
+# Install bats-core
+RUN rm -rf /tmp/bats-core \
+    && rm -rf /usr/src/bats-core \
+    && git clone https://github.com/bats-core/bats-core.git /usr/src/bats-core \
+    && git clone https://github.com/ztombol/bats-support /tests/test_helper/bats-support \
+    && git clone https://github.com/ztombol/bats-assert /tests/test_helper/bats-assert \
     && /usr/src/bats-core/install.sh /usr/local
+
+# Install gotemplate
+RUN set -x \
+  && wget -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 \
+  && chmod 755 gomplate \
+  && mv gomplate /usr/local/bin/gomplate \
+  && mkdir -p /src
+
 # copy over the start.sh script
 COPY scripts/start.sh /home/vscode/actions-runner/start.sh
 
