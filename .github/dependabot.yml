@@ -24,6 +24,10 @@ updates:
     commit-message:
       prefix: "fix" # Prefix all actions' bump commit messages with "fix" to bump this action if it uses newer base actions
       prefix-development: "fix" # ...even dev scope ones
+    groups:
+      actions:
+        patterns:
+          - "*"
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/" # Location of dockerfile
     schedule:
