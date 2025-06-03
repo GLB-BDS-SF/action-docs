@@ -3,17 +3,6 @@ on:
   - pull_request
 jobs:
 
-  label:
-    name: 'PR Labeler'
-    if: github.event.action == 'opened'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: TimonVS/pr-labeler-action@v5
-        with:
-          configuration-path: .github/pr-labeler.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build:
     name: 'Build example docs'
     runs-on: ubuntu-latest
