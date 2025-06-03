@@ -12,8 +12,6 @@ updates:
     open-pull-requests-limit: 2
     pull-request-branch-name:
       separator: "-" # Use '-' as a separator in update branch name instead of the default '/' potentially impacting builds
-    reviewers:
-      - "GLB-BDS-SF/bds-sf-team" # Make SF team aware of the PR by requesting a review of any changes introduced to used actions
     commit-message:
       prefix: "fix" # Prefix all actions' bump commit messages with "fix" to bump this action if it uses newer base actions
       prefix-development: "fix" # ...even dev scope ones
@@ -26,10 +24,8 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 2
-    reviewers:
-      - "GLB-BDS-SF/bds-sf-team" # Assign SF team to review the PR to make us aware
     pull-request-branch-name:
       separator: "-"
     commit-message:
-      prefix: "chore" # Prefix all commit messages with "chore: " to NOT bump with build container base OS changes
-      prefix-development: "chore" # ...even dev scope ones
+      prefix: "fix" # Prefix all commit messages with "fix: " to bump with run container base OS changes
+      prefix-development: "fix" # ...even dev scope ones
