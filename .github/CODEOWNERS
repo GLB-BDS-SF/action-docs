@@ -1,0 +1,6 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @GLB-BDS-SF/bds-sf-team will be requested for
+# review when someone opens a pull request, per
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+*   @GLB-BDS-SF/bds-sf-team
